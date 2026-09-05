@@ -728,7 +728,7 @@
 
     <!-- PAGE: PROFILE -->
     <div id="page-profile" class="page fade-in">
-            </div>
+    </div>
 
     <!-- PAGE: LOGIN -->
     <div id="page-login" class="page fade-in active">
@@ -750,7 +750,7 @@
                         <label class="block text-xs font-bold text-green-500 tracking-wider">EMAIL / USERNAME / PHONE<input type="text" name="identifier" placeholder="Enter your identifier" class="w-full mt-2 px-4 py-3 bg-slate-900 text-sm font-semibold text-white outline-none" required="" autocomplete="username"></label>
                         <label class="block text-xs font-bold text-green-500 tracking-wider">PASSWORD<input type="password" name="password" placeholder="Enter password" class="w-full mt-2 px-4 py-3 bg-slate-900 text-sm font-semibold text-white outline-none" required="" autocomplete="current-password"></label>
                     </div>
-                                        <button type="submit" class="btn-primary-custom w-full mt-5 justify-center text-sm">Open secure session</button>
+                    <button type="submit" class="btn-primary-custom w-full mt-5 justify-center text-sm">Open secure session</button>
                 </form>
                 <form action="login.php" method="POST" id="signupForm" class="hidden">
                     <input type="hidden" name="action" value="signup">
@@ -818,10 +818,10 @@
                         <div>
                             <label class="text-sm font-bold text-slate-300 block mb-1">Payment Method *</label>
                             <select id="cr_payment_method" class="w-full px-4 py-3 bg-slate-900 rounded-xl text-sm font-semibold text-white border-2 border-transparent focus:border-red-500 outline-none" onchange="showCoinPaymentDetails(this.value)">
-                                                                <option value="SADAPAY">SADAPAY</option>
-                                                                <option value="Bank Transfer">Bank Transfer</option>
-                                                                <option value="USDT (TRC20)">USDT (TRC20)</option>
-                                                            </select>
+                                <option value="SADAPAY">SADAPAY</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="USDT (TRC20)">USDT (TRC20)</option>
+                            </select>
                         </div>
                         
                         <div id="coinPaymentDetails" class="hidden bg-amber-900/20 rounded-xl p-4 border border-amber-500/20">
@@ -862,7 +862,7 @@
         <div class="px-4 pt-4">
             <h2 class="text-lg font-black" style="color: #dc2626;"><i class="fa-solid fa-bell mr-2"></i>Notifications</h2>
             <div class="mt-4">
-                                                <div class="notification-item">
+                <div class="notification-item">
                     <div class="flex justify-between">
                         <span class="font-bold" style="color: #dc2626;">MATER AND I'M</span>
                         <span class="text-xs text-slate-500">2026-09-02 18:34:31</span>
@@ -870,22 +870,64 @@
                     <p class="text-slate-300 text-sm mt-1">How to get details master</p>
                     <span class="text-xs text-slate-500">Type: info</span>
                 </div>
-                                            </div>
+            </div>
         </div>
     </div>
 
 </div>
 
-<!-- BOTTOM NAV - Only for logged in users -->
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav flex items-center justify-around">
+    <button onclick="showPage('home')" class="bottom-nav-item active-nav flex flex-col items-center">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </button>
+    <button onclick="showPage('products')" class="bottom-nav-item flex flex-col items-center">
+        <i class="fa-solid fa-cubes"></i>
+        <span>Tools</span>
+    </button>
+    <button onclick="showPage('cart')" class="bottom-nav-item flex flex-col items-center">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+    </button>
+    <button onclick="showPage('orders')" class="bottom-nav-item flex flex-col items-center">
+        <i class="fa-solid fa-box-open"></i>
+        <span>Orders</span>
+    </button>
+    <button onclick="showPage('buy-coins')" class="bottom-nav-item flex flex-col items-center">
+        <i class="fa-solid fa-coins"></i>
+        <span>Coins</span>
+    </button>
+    <button onclick="showPage('notifications')" class="bottom-nav-item flex flex-col items-center">
+        <i class="fa-solid fa-bell"></i>
+        <span>Alerts</span>
+    </button>
+</nav>
+
+<!-- CHAT BUTTON & WIDGET -->
+<button class="chat-btn" onclick="toggleChat()"><i class="fa-solid fa-comment-dots"></i></button>
+<div id="chatWidget" class="chat-widget">
+    <div class="chat-header">
+        <h4>Support Live Chat</h4>
+        <button onclick="toggleChat()" style="color:#888; background:none; border:none; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="chatMessages" class="chat-messages">
+        <div class="msg admin">👋 Welcome! How can we help you?</div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Write a message...">
+        <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
 
 <script>
 // Product data from PHP
 const products = [{"id":1,"name":"DARK WI-FI HACKING TOOL","price":0,"sale_price":2000,"category":"Penetration Testing","images":["data\/uploads\/img_20260902191516_236fdc224b84.png"],"video":"","description":"WIFI HACKING TOOL WITH BRUT FORCE THROUGH WIFI CRACKING SYSTEM","specifications":"NEW UPDATE COMING SOON","stock":9999999999999,"is_free":true,"download_url":"https:\/\/www.mediafire.com\/file\/8cb6duecx4f3dwj\/WIFI_PASSWORD_TOOL_BY_THE_DARK_OF_MASTER.zip\/file","offer_price":0,"offer_end":"","sort_order":0,"created_at":"2026-09-02 19:17:38"}];
 const categories = [{"id":1,"name":"Penetration Testing","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":2,"name":"OSINT","icon":"fa-magnifying-glass","color":"bg-green-900 text-green-400"},{"id":3,"name":"Forensics","icon":"fa-microscope","color":"bg-blue-900 text-blue-400"},{"id":4,"name":"Exploits","icon":"fa-bug","color":"bg-purple-900 text-purple-400"},{"id":5,"name":"Privacy Tools","icon":"fa-mask","color":"bg-gray-800 text-gray-400"},{"id":6,"name":"Malware Analysis","icon":"fa-skull","color":"bg-amber-900 text-amber-400"},{"id":7,"name":"Network Security","icon":"fa-network-wired","color":"bg-cyan-900 text-cyan-400"},{"id":8,"name":"Android Rats","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":9,"name":"Laptop Rats","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":10,"name":"All Courses","icon":"fa-network-wired","color":"bg-red-900 text-red-400"},{"id":11,"name":"BugS\ud83d\udc7e\ud83d\udc1b","icon":"fa-bug","color":"bg-red-900 text-red-400"},{"id":12,"name":"NEW CATEGORIES COMING SOON","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"}];
-const settings = {"site_name":"DARK SITE","tagline":"Hacking Tools & Cybersecurity Tools","site_logo":"https:\/\/i.ibb.co\/27KfnK7H\/b-Is-picture-ko-aik-we.jpg","background_image":"https:\/\/i.ibb.co\/h1YLWSSx\/Screenshot-20260902-025909.png","secondary_bg":"https:\/\/i.ibb.co\/fz7R0tTG\/hacking-dark-web-threat-png.jpg","hero_image":"https:\/\/i.ibb.co\/gcZvC5S\/a-Is-picture-ko-aik-we.png","primary_color":"#dc2626","secondary_color":"#22c55e","developer_name":"THE DARK OF MASTER","disclaimer":"This website is for educational purposes only. All tools are for cybersecurity and hacking.","contact_email":"thedarkofmaster@gmail.com","contact_phone":"+923268801224","social_links":[{"name":"YouTube","url":"https:\/\/youtube.com","icon":"fa-youtube"},{"name":"Telegram","url":"https:\/\/t.me\/darkofmaster_group","icon":"fa-telegram"},{"name":"Discord","url":"https:\/\/discord.com","icon":"fa-discord"}],"payment_methods":[{"name":"SADAPAY","number":"03268801224","icon":"fa-mobile-screen-button"},{"name":"Bank Transfer","details":"HBL: NOT AVAILABLE","icon":"fa-building-columns"},{"name":"USDT (TRC20)","address":"NOT AVAILABLE","icon":"fa-coins"}],"cod_enabled":false,"coin_value":100,"coin_name":"QC","admin_password_hash":"$2y$10$ihHWIIOSvzbXc451d7vauOALF5M0Nm78rOiuQCPFV2lJ51ynOUqgW"};
+const settings = {"site_name":"DARK SITE","tagline":"Hacking Tools & Cybersecurity Tools","site_logo":"https:\/\/i.ibb.co/27KfnK7H\/b-Is-picture-ko-aik-we.jpg","background_image":"https:\/\/i.ibb.co/h1YLWSSx\/Screenshot-20260902-025909.png","secondary_bg":"https:\/\/i.ibb.co/fz7R0tTG\/hacking-dark-web-threat-png.jpg","hero_image":"https:\/\/i.ibb.co/gcZvC5S\/a-Is-picture-ko-aik-we.png","primary_color":"#dc2626","secondary_color":"#22c55e","developer_name":"THE DARK OF MASTER","disclaimer":"This website is for educational purposes only. All tools are for cybersecurity and hacking.","contact_email":"thedarkofmaster@gmail.com","contact_phone":"+923268801224","social_links":[{"name":"YouTube","url":"https:\/\/youtube.com","icon":"fa-youtube"},{"name":"Telegram","url":"https:\/\/t.me\/darkofmaster_group","icon":"fa-telegram"},{"name":"Discord","url":"https:\/\/discord.com","icon":"fa-discord"}],"payment_methods":[{"name":"SADAPAY","number":"03268801224","icon":"fa-mobile-screen-button"},{"name":"Bank Transfer","details":"HBL: NOT AVAILABLE","icon":"fa-building-columns"},{"name":"USDT (TRC20)","address":"NOT AVAILABLE","icon":"fa-coins"}],"cod_enabled":false,"coin_value":100,"coin_name":"QC","admin_password_hash":"$2y$10$ihHWIIOSvzbXc451d7vauOALF5M0Nm78rOiuQCPFV2lJ51ynOUqgW"};
 const notifications = [{"id":1,"title":"MATER AND I'M","message":"How to get details master","type":"info","created_at":"2026-09-02 18:34:31","read_by":[]}];
 let currentUser = null;
-let currentPage = 'home';
+let currentPage = 'login';
 let cartItems = [];
 let cartTotal = 0;
 const coinValue = 100;
@@ -893,9 +935,10 @@ const userCoins = 0;
 let isLoggedIn = false;
 
 // ===== TOAST =====
-function showToast(msg) {
+function showToast(msg, type = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
+    t.className = 'toast ' + type;
     t.style.display = 'block';
     clearTimeout(t._timer);
     t._timer = setTimeout(() => t.style.display = 'none', 3000);
@@ -915,7 +958,7 @@ function showPage(name) {
     
     if (isLoggedIn) {
         document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active-nav'));
-        const navMap = { home: 0, products: 1, cart: 2, orders: 3, profile: 4 };
+        const navMap = { home: 0, products: 1, cart: 2, orders: 3, 'buy-coins': 4, notifications: 5 };
         const idx = navMap[name];
         if (idx !== undefined) {
             const items = document.querySelectorAll('.bottom-nav-item');
@@ -937,7 +980,7 @@ function switchAuthTab(tab) {
 // ===== CART FUNCTIONS =====
 function addToCart(productId) {
     if (!isLoggedIn) {
-        showToast('Please login first');
+        showToast('Please login first', 'error');
         showPage('login');
         return;
     }
@@ -950,7 +993,7 @@ function addToCart(productId) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            showToast('🛒 Added to cart');
+            showToast('🛒 Added to cart', 'success');
             location.reload();
         }
     });
@@ -965,7 +1008,7 @@ function removeFromCart(productId) {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            showToast('🗑️ Removed from cart');
+            showToast('🗑️ Removed from cart', 'success');
             location.reload();
         }
     });
@@ -994,7 +1037,7 @@ function updateCartQty(productId, delta) {
 // ===== BUY WITH COINS =====
 function buyWithCoins(productId) {
     if (!isLoggedIn) {
-        showToast('Please login first');
+        showToast('Please login first', 'error');
         showPage('login');
         return;
     }
@@ -1008,7 +1051,7 @@ function buyWithCoins(productId) {
     const neededCoins = Math.ceil(price / coinValue);
     
     if (userCoins < neededCoins) {
-        showToast('❌ Insufficient coins! You need ' + neededCoins + ' coins. Buy more coins from the Buy Coins section.');
+        showToast('❌ Insufficient coins! You need ' + neededCoins + ' coins. Buy more coins from the Buy Coins section.', 'error');
         showPage('buy-coins');
         return;
     }
@@ -1021,14 +1064,14 @@ function buyWithCoins(productId) {
 // ===== PAY CART WITH COINS =====
 function payCartWithCoins() {
     if (!isLoggedIn) {
-        showToast('Please login first');
+        showToast('Please login first', 'error');
         showPage('login');
         return;
     }
     
     const totalCoinsNeeded = Math.ceil(cartTotal / coinValue);
     if (userCoins < totalCoinsNeeded) {
-        showToast('❌ Insufficient coins! You need ' + totalCoinsNeeded + ' coins.');
+        showToast('❌ Insufficient coins! You need ' + totalCoinsNeeded + ' coins.', 'error');
         showPage('buy-coins');
         return;
     }
@@ -1122,7 +1165,7 @@ function previewCoinImage(event) {
 
 function submitCoinRequest() {
     if (!isLoggedIn) {
-        showToast('Please login first');
+        showToast('Please login first', 'error');
         showPage('login');
         return;
     }
@@ -1132,11 +1175,11 @@ function submitCoinRequest() {
     const transactionId = document.getElementById('cr_transaction_id').value.trim();
     
     if (!coins || coins <= 0) {
-        showToast('Please enter valid number of coins');
+        showToast('Please enter valid number of coins', 'error');
         return;
     }
     if (!transactionId) {
-        showToast('Please enter transaction ID');
+        showToast('Please enter transaction ID', 'error');
         return;
     }
     
@@ -1160,7 +1203,7 @@ function submitCoinRequest() {
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            showToast('✅ ' + data.message);
+            showToast('✅ ' + data.message, 'success');
             document.getElementById('cr_coins').value = '';
             document.getElementById('cr_transaction_id').value = '';
             document.getElementById('coinImagePreview').style.display = 'none';
@@ -1168,7 +1211,7 @@ function submitCoinRequest() {
             updateCoinAmountDisplay();
             setTimeout(() => location.reload(), 2000);
         } else {
-            showToast('❌ ' + data.message);
+            showToast('❌ ' + data.message, 'error');
         }
     });
 }
@@ -1186,12 +1229,13 @@ function renderProducts(category) {
     const grid = document.getElementById('productGrid');
     const noRes = document.getElementById('noResults');
     
+    if (!grid) return;
     if (filtered.length === 0) {
         grid.innerHTML = '';
-        noRes.classList.remove('hidden');
+        if (noRes) noRes.classList.remove('hidden');
         return;
     }
-    noRes.classList.add('hidden');
+    if (noRes) noRes.classList.add('hidden');
     grid.innerHTML = filtered.map(p => {
         const isFree = p.is_free || false;
         const price = isFree ? 0 : p.price;
@@ -1250,33 +1294,36 @@ function handleSearch(q) {
     );
     const grid = document.getElementById('searchGrid');
     const empty = document.getElementById('searchEmpty');
-    document.querySelector('#page-search h2').textContent = `Results for "${q}"`;
+    const searchHeader = document.querySelector('#page-search h2');
+    if (searchHeader) searchHeader.textContent = `Results for "${q}"`;
     if (results.length === 0) {
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
+        if (grid) grid.innerHTML = '';
+        if (empty) empty.classList.remove('hidden');
     } else {
-        empty.classList.add('hidden');
-        grid.innerHTML = results.map(p => {
-            const isFree = p.is_free || false;
-            const price = isFree ? 0 : p.price;
-            const image = p.images && p.images.length > 0 ? p.images[0] : 'https://i.ibb.co/fz7R0tTG/hacking-dark-web-threat-png.jpg';
-            return `
-                <div class="product-card rounded-2xl overflow-hidden cursor-pointer" onclick="window.location.href='product.php?id=${p.id}'">
-                    <div class="relative">
-                        <img src="${image}" alt="${p.name}" class="product-img" loading="lazy" />
-                        ${isFree ? `<span class="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">FREE</span>` : ''}
-                        <span class="absolute top-2 right-2 bg-black/80 text-xs font-bold px-2 py-0.5 rounded-full text-slate-300 border border-red-500/20">${p.category}</span>
-                    </div>
-                    <div class="p-3">
-                        <p class="text-white font-bold text-sm leading-tight line-clamp-2 mb-1">${p.name}</p>
-                        <div class="flex items-center justify-between">
-                            ${isFree ? `<span class="text-green-500 font-black text-lg">FREE</span>` : `<span class="text-red-500 font-black text-lg">${formatPrice(price)}</span>`}
-                            <button onclick="event.stopPropagation(); addToCart(${p.id})" class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-red-500/20"><i class="fa-solid fa-plus text-xs"></i></button>
+        if (empty) empty.classList.add('hidden');
+        if (grid) {
+            grid.innerHTML = results.map(p => {
+                const isFree = p.is_free || false;
+                const price = isFree ? 0 : p.price;
+                const image = p.images && p.images.length > 0 ? p.images[0] : 'https://i.ibb.co/fz7R0tTG/hacking-dark-web-threat-png.jpg';
+                return `
+                    <div class="product-card rounded-2xl overflow-hidden cursor-pointer" onclick="window.location.href='product.php?id=${p.id}'">
+                        <div class="relative">
+                            <img src="${image}" alt="${p.name}" class="product-img" loading="lazy" />
+                            ${isFree ? `<span class="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">FREE</span>` : ''}
+                            <span class="absolute top-2 right-2 bg-black/80 text-xs font-bold px-2 py-0.5 rounded-full text-slate-300 border border-red-500/20">${p.category}</span>
+                        </div>
+                        <div class="p-3">
+                            <p class="text-white font-bold text-sm leading-tight line-clamp-2 mb-1">${p.name}</p>
+                            <div class="flex items-center justify-between">
+                                ${isFree ? `<span class="text-green-500 font-black text-lg">FREE</span>` : `<span class="text-red-500 font-black text-lg">${formatPrice(price)}</span>`}
+                                <button onclick="event.stopPropagation(); addToCart(${p.id})" class="w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-red-500/20"><i class="fa-solid fa-plus text-xs"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-        }).join('');
+                `;
+            }).join('');
+        }
     }
     if (currentPage !== 'search') {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1389,82 +1436,89 @@ document.getElementById('chatInput')?.addEventListener('keypress', function(e) {
 
 // ===== INIT =====
 showPage('login');
-
-function updateCartBadge() {
-    const badge = document.getElementById('cartBadge');
-    const count = cartItems.length;
-    if (count > 0) {
-        badge.textContent = count;
-        badge.classList.remove('hidden');
-    } else {
-        badge.classList.add('hidden');
-    }
-}
-updateCartBadge();
 </script>
 
 <!-- Firebase Sync & Authentication Script -->
 <script type="module">
     import { syncUserToFirebase } from './firebase-config.js';
 
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    // Handle Login Form Submit
+    document.getElementById('loginForm')?.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Verifying Session...";
+        }
 
         try {
+            const formData = new FormData(this);
             const response = await fetch('login.php', {
                 method: 'POST',
                 body: formData
             });
+
             const data = await response.json();
 
             if (data.status === 'success') {
                 await syncUserToFirebase(data.user);
-                
-                alert("Login Successful!");
+                showToast("✅ Login Successful!", "success");
                 isLoggedIn = true;
-                if (typeof showPage === 'function') {
-                    showPage('home'); 
-                } else {
-                    window.location.href = data.redirect;
-                }
+                currentUser = data.user;
+                document.body.classList.remove('guest-body');
+                document.body.classList.add('member-body');
+                showPage('home');
             } else {
-                alert(data.message);
+                showToast("❌ " + data.message, "error");
             }
         } catch (err) {
             console.error("Login Error:", err);
-            alert("An error occurred during login.");
+            showToast("❌ Server or Network Error", "error");
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Open secure session";
+            }
         }
     });
 
-    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    // Handle Signup Form Submit
+    document.getElementById('signupForm')?.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Creating Identity...";
+        }
 
         try {
+            const formData = new FormData(this);
             const response = await fetch('login.php', {
                 method: 'POST',
                 body: formData
             });
+
             const data = await response.json();
 
             if (data.status === 'success') {
-                // Save new user data to Firebase Firestore
                 await syncUserToFirebase(data.user);
-                
-                alert("Account Created & Logged in!");
+                showToast("✅ Account Created & Logged In!", "success");
                 isLoggedIn = true;
-                if (typeof showPage === 'function') {
-                    showPage('home'); // Dashboard view show karein
-                } else {
-                    window.location.href = data.redirect;
-                }
+                currentUser = data.user;
+                document.body.classList.remove('guest-body');
+                document.body.classList.add('member-body');
+                showPage('home');
             } else {
-                alert(data.message);
+                showToast("❌ " + data.message, "error");
             }
         } catch (err) {
             console.error("Signup Error:", err);
-            alert("An error occurred during signup.");
+            showToast("❌ Server or Network Error", "error");
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Create secure identity";
+            }
         }
     });
 </script>
