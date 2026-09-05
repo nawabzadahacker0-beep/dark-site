@@ -1,4 +1,3 @@
-// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -14,18 +13,18 @@ const firebaseConfig = {
   measurementId: "G-0CBTF67JM6"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Function to Sync User Data to Firebase
 async function syncUserToFirebase(userData) {
   try {
-    const userRef = doc(db, "users", userData.email);
+    if (!userData) return false;
+    const docId = userData.email || userData.username || String(Date.now());
+    const userRef = doc(db, "users", docId);
     await setDoc(userRef, {
       username: userData.username || "",
-      email: userData.email,
+      email: userData.email || "",
       phone: userData.phone || "",
       coins: userData.coins || 0,
       lastLogin: serverTimestamp()
@@ -34,7 +33,7 @@ async function syncUserToFirebase(userData) {
     console.log("Data Firebase mein successfully save ho gaya!");
     return true;
   } catch (error) {
-    console.error("Firebase Sync Error:", error);
+    console.warn("Firebase Sync Warning (Proceeding with PHP Login):", error);
     return false;
   }
 }
