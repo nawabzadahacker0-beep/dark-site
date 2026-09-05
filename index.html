@@ -884,13 +884,13 @@ const products = [{"id":1,"name":"DARK WI-FI HACKING TOOL","price":0,"sale_price
 const categories = [{"id":1,"name":"Penetration Testing","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":2,"name":"OSINT","icon":"fa-magnifying-glass","color":"bg-green-900 text-green-400"},{"id":3,"name":"Forensics","icon":"fa-microscope","color":"bg-blue-900 text-blue-400"},{"id":4,"name":"Exploits","icon":"fa-bug","color":"bg-purple-900 text-purple-400"},{"id":5,"name":"Privacy Tools","icon":"fa-mask","color":"bg-gray-800 text-gray-400"},{"id":6,"name":"Malware Analysis","icon":"fa-skull","color":"bg-amber-900 text-amber-400"},{"id":7,"name":"Network Security","icon":"fa-network-wired","color":"bg-cyan-900 text-cyan-400"},{"id":8,"name":"Android Rats","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":9,"name":"Laptop Rats","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"},{"id":10,"name":"All Courses","icon":"fa-network-wired","color":"bg-red-900 text-red-400"},{"id":11,"name":"BugS\ud83d\udc7e\ud83d\udc1b","icon":"fa-bug","color":"bg-red-900 text-red-400"},{"id":12,"name":"NEW CATEGORIES COMING SOON","icon":"fa-shield-halved","color":"bg-red-900 text-red-400"}];
 const settings = {"site_name":"DARK SITE","tagline":"Hacking Tools & Cybersecurity Tools","site_logo":"https:\/\/i.ibb.co\/27KfnK7H\/b-Is-picture-ko-aik-we.jpg","background_image":"https:\/\/i.ibb.co\/h1YLWSSx\/Screenshot-20260902-025909.png","secondary_bg":"https:\/\/i.ibb.co\/fz7R0tTG\/hacking-dark-web-threat-png.jpg","hero_image":"https:\/\/i.ibb.co\/gcZvC5S\/a-Is-picture-ko-aik-we.png","primary_color":"#dc2626","secondary_color":"#22c55e","developer_name":"THE DARK OF MASTER","disclaimer":"This website is for educational purposes only. All tools are for cybersecurity and hacking.","contact_email":"thedarkofmaster@gmail.com","contact_phone":"+923268801224","social_links":[{"name":"YouTube","url":"https:\/\/youtube.com","icon":"fa-youtube"},{"name":"Telegram","url":"https:\/\/t.me\/darkofmaster_group","icon":"fa-telegram"},{"name":"Discord","url":"https:\/\/discord.com","icon":"fa-discord"}],"payment_methods":[{"name":"SADAPAY","number":"03268801224","icon":"fa-mobile-screen-button"},{"name":"Bank Transfer","details":"HBL: NOT AVAILABLE","icon":"fa-building-columns"},{"name":"USDT (TRC20)","address":"NOT AVAILABLE","icon":"fa-coins"}],"cod_enabled":false,"coin_value":100,"coin_name":"QC","admin_password_hash":"$2y$10$ihHWIIOSvzbXc451d7vauOALF5M0Nm78rOiuQCPFV2lJ51ynOUqgW"};
 const notifications = [{"id":1,"title":"MATER AND I'M","message":"How to get details master","type":"info","created_at":"2026-09-02 18:34:31","read_by":[]}];
-const currentUser = null;
+let currentUser = null;
 let currentPage = 'home';
 let cartItems = [];
 let cartTotal = 0;
 const coinValue = 100;
 const userCoins = 0;
-const isLoggedIn = false;
+let isLoggedIn = false;
 
 // ===== TOAST =====
 function showToast(msg) {
@@ -1401,6 +1401,72 @@ function updateCartBadge() {
     }
 }
 updateCartBadge();
+</script>
+
+<!-- Firebase Sync & Authentication Script -->
+<script type="module">
+    import { syncUserToFirebase } from './firebase-config.js';
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch('login.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                await syncUserToFirebase(data.user);
+                
+                alert("Login Successful!");
+                isLoggedIn = true;
+                if (typeof showPage === 'function') {
+                    showPage('home'); 
+                } else {
+                    window.location.href = data.redirect;
+                }
+            } else {
+                alert(data.message);
+            }
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("An error occurred during login.");
+        }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch('login.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                // Save new user data to Firebase Firestore
+                await syncUserToFirebase(data.user);
+                
+                alert("Account Created & Logged in!");
+                isLoggedIn = true;
+                if (typeof showPage === 'function') {
+                    showPage('home'); // Dashboard view show karein
+                } else {
+                    window.location.href = data.redirect;
+                }
+            } else {
+                alert(data.message);
+            }
+        } catch (err) {
+            console.error("Signup Error:", err);
+            alert("An error occurred during signup.");
+        }
+    });
 </script>
 
 </body></html>
