@@ -1,16 +1,21 @@
 <?php
+ob_start();
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
+
+error_reporting(0);
+ini_set('display_errors', 0);
 
 $host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
 $db_name = 'dark_site';
 
-$conn = new mysqli($host, $db_user, $db_pass, $db_name);
+$conn = @new mysqli($host, $db_user, $db_pass, $db_name);
 
 if ($conn->connect_error) {
-    echo json_encode(['status' => 'error', 'message' => 'Database Connection Failed']);
+    ob_clean();
+    echo json_encode(['status' => 'error', 'message' => 'Database Connection Failed: ' . $conn->connect_error]);
     exit;
 }
 
@@ -41,11 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'] ?? '';
 
         if (empty($username) || empty($phone) || empty($email) || empty($password)) {
+            ob_clean();
             echo json_encode(['status' => 'error', 'message' => 'Please fill in all fields.']);
             exit;
         }
 
         if (strlen($password) < 8) {
+            ob_clean();
             echo json_encode(['status' => 'error', 'message' => 'Password must be at least 8 characters long.']);
             exit;
         }
@@ -56,8 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkStmt->store_result();
 
         if ($checkStmt->num_rows > 0) {
-            echo json_encode(['status' => 'error', 'message' => 'Username or Email already registered!']);
             $checkStmt->close();
+            ob_clean();
+            echo json_encode(['status' => 'error', 'message' => 'Username or Email already registered!']);
             exit;
         }
         $checkStmt->close();
@@ -79,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['coins']     = 0;
             $_SESSION['is_logged'] = true;
 
+            ob_clean();
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Registration successful!',
@@ -92,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
             exit;
         } else {
+            ob_clean();
             echo json_encode(['status' => 'error', 'message' => 'Registration failed.']);
             exit;
         }
@@ -103,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password   = $_POST['password'] ?? '';
 
         if (empty($identifier) || empty($password)) {
+            ob_clean();
             echo json_encode(['status' => 'error', 'message' => 'Please enter identifier and password.']);
             exit;
         }
@@ -114,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($user = $result->fetch_assoc()) {
             if ($user['blocked']) {
+                ob_clean();
                 echo json_encode(['status' => 'error', 'message' => 'Your account is blocked.']);
                 exit;
             }
@@ -127,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['coins']     = $user['coins'];
                 $_SESSION['is_logged'] = true;
 
+                ob_clean();
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Login successful!',
@@ -135,19 +148,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'username' => $user['username'],
                         'email' => $user['email'],
                         'phone' => $user['phone'],
-                        'coins' => $user['coins']
+                        'coins' => (int)$user['coins']
                     ]
                 ]);
                 exit;
             } else {
+                ob_clean();
                 echo json_encode(['status' => 'error', 'message' => 'Invalid Password!']);
                 exit;
             }
         } else {
+            ob_clean();
             echo json_encode(['status' => 'error', 'message' => 'Account not found.']);
             exit;
         }
     }
 }
 $conn->close();
+ob_end_flush();
 ?>
