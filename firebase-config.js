@@ -1,6 +1,17 @@
 // firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { 
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc, 
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB25VaErJEsI3VLBeb52cpczKRmEWC4fEs",
@@ -14,25 +25,43 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-async function syncUserToFirebase(userData) {
+// Save or Update User in Firestore
+async function saveUserToFirestore(uid, userData) {
   try {
-    if (!userData) return false;
-    const docKey = userData.email || userData.username || "user_" + Date.now();
-    const userRef = doc(db, "users", docKey);
+    const userRef = doc(db, "users", uid);
     await setDoc(userRef, {
-      username: userData.username || "",
-      email: userData.email || "",
-      phone: userData.phone || "",
-      coins: userData.coins || 0,
+      ...userData,
       lastLogin: serverTimestamp()
     }, { merge: true });
     return true;
   } catch (error) {
-    console.warn("Firebase sync skipped/failed:", error);
+    console.error("Firestore Error:", error);
     return false;
   }
 }
 
-export { db, syncUserToFirebase };
+// Get User Profile
+async function getUserFromFirestore(uid) {
+  try {
+    const userRef = doc(db, "users", uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      return snap.data();
+    }
+  } catch (error) {
+    console.error("Fetch User Error:", error);
+  }
+  return null;
+}
+
+export { 
+    auth, 
+    db, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    saveUserToFirestore, 
+    getUserFromFirestore 
+};
