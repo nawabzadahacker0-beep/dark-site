@@ -1,5 +1,5 @@
+// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -14,14 +14,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
 async function syncUserToFirebase(userData) {
   try {
     if (!userData) return false;
-    const docId = userData.email || userData.username || String(Date.now());
-    const userRef = doc(db, "users", docId);
+    const docKey = userData.email || userData.username || "user_" + Date.now();
+    const userRef = doc(db, "users", docKey);
     await setDoc(userRef, {
       username: userData.username || "",
       email: userData.email || "",
@@ -29,13 +28,11 @@ async function syncUserToFirebase(userData) {
       coins: userData.coins || 0,
       lastLogin: serverTimestamp()
     }, { merge: true });
-    
-    console.log("Data Firebase mein successfully save ho gaya!");
     return true;
   } catch (error) {
-    console.warn("Firebase Sync Warning (Proceeding with PHP Login):", error);
+    console.warn("Firebase sync skipped/failed:", error);
     return false;
   }
 }
 
-export { auth, db, syncUserToFirebase, signInWithEmailAndPassword, createUserWithEmailAndPassword };
+export { db, syncUserToFirebase };
